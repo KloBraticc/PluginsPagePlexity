@@ -1,9 +1,9 @@
 {
-  "Name": "Test Window",
-  "Description": "Adds a custom button with a Window IDK",
-  "icon_url": "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Icons/image.png",
+  "Name": "Temp Files Cleaner",
+  "Description": "Cleans your PCS Temp Files",
+  "icon_url": "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Icons/images.jpg",
   "Code": [
-    "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Codes/TestPlugin.xaml",
-    "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Codes/TestPlugin.cs"
+    "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Codes/Temp.xaml",
+    "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Codes/Temp.cs"
   ]
 }
