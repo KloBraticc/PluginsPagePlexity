@@ -2,14 +2,25 @@
   "Name": "Custom UI Button Plugin",
   "Description": "Adds a custom button with a message box",
   "icon_url": "",
-  "CodeFiles": [
-    {
-      "filename": "CustomUIButton2.xaml",
-      "url": "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Codes/CustomUIButton2.xaml"
-    },
-    {
-      "filename": "CustomUIButton2.xaml.cs",
-      "url": "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Codes/CustomUIButton2.xaml.cs"
-    }
+  "Code": [
+    "using System.Windows;",
+    "using System.Windows.Controls;",
+    "",
+    "namespace Plexity",
+    "{",
+    "    public partial class CustomUIButton : UserControl",
+    "    {",
+    "        public CustomUIButton()",
+    "        {",
+    "            InitializeComponent();",
+    "            MyButton.Click += MyButton_Click;",
+    "        }",
+    "",
+    "        private void MyButton_Click(object sender, RoutedEventArgs e)",
+    "        {",
+    "            MessageBox.Show(\"Hello from the custom plugin button!\");",
+    "        }",
+    "    }",
+    "}"
   ]
 }
