@@ -3,7 +3,7 @@
   "Description": "Adds a custom button with a Window IDK",
   "icon_url": "",
   "Code": [
-    "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Codes/CustomUIButton3.xaml",
-    "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Codes/CustomUIButton2.xaml.cs"
+    "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Codes/TestPlugin.xaml",
+    "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Codes/TestPlugin.cs"
   ]
 }
