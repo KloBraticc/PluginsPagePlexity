@@ -4,12 +4,8 @@
   "icon_url": "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Icons/image.png",
   "CodeFiles": [
     {
-      "filename": "main.cpp",
-      "url": "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Plugins/TestPlugin/main.cpp"
-    },
-    {
-      "filename": "helper.cpp",
-      "url": "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Plugins/TestPlugin/helper.cpp"
+      "filename": "image.png",
+      "url": "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Icons/image.png"
     }
   ]
 }
