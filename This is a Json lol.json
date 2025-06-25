@@ -1,0 +1,11 @@
+{
+  "Name": "Test for Plugin Auto Updater alr lol",
+  "Description": "Test Plugin discrtiop 7BT is HOT!!",
+  "icon_url": "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Icons/image.png",
+  "CodeFiles": [
+    {
+      "filename": "image.png",
+      "url": "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Icons/image.png"
+    }
+  ]
+}
