@@ -1,0 +1,15 @@
+{
+  "Name": "Custom UI Button Plugin",
+  "Description": "Adds a custom button with a message box",
+  "icon_url": "",
+  "CodeFiles": [
+    {
+      "filename": "CustomUIButton2.xaml",
+      "url": "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Codes/CustomUIButton2.xaml"
+    },
+    {
+      "filename": "CustomUIButton2.xaml.cs",
+      "url": "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Codes/CustomUIButton2.xaml.cs"
+    }
+  ]
+}
