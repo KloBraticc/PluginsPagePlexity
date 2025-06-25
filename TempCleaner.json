@@ -1,0 +1,9 @@
+{
+  "Name": "Test Window",
+  "Description": "Adds a custom button with a Window IDK",
+  "icon_url": "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Icons/image.png",
+  "Code": [
+    "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Codes/TestPlugin.xaml",
+    "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Codes/TestPlugin.cs"
+  ]
+}
