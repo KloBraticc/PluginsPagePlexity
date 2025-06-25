@@ -1,5 +1,5 @@
 {
-  "name": "Example Plugin",
-  "description": "Does something cool.",
-  "iconUrl": "https://github.com/KloBraticc/PluginsPagePlexity/blob/main/Icons/image.png"
+  "Name": "Sample Plugin",
+  "Description": "This is a sample plugin.",
+  "icon_url": "https://github.com/KloBraticc/PluginsPagePlexity/blob/main/Icons/image.png"
 }
