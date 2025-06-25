@@ -1,7 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace YourNamespace
+namespace Plexity
 {
     public partial class CustomUIButton : UserControl
     {
