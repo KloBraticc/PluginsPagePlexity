@@ -12,21 +12,19 @@ public class TestPluginLogic
 {
     private Window _window;
     private Button _button;
+    private ProgressBar _loadingBar;
 
     public TestPluginLogic(Window window)
     {
         _window = window;
 
-        // Find the button inside the Grid (not DockPanel)
-        _button = (Button)((Grid)window.Content).FindName("MyButton");
+        var grid = (Grid)_window.Content;
+        _button = (Button)grid.FindName("MyButton");
+        _loadingBar = (ProgressBar)grid.FindName("LoadingBar");
 
         if (_button != null)
         {
             _button.Click += async (s, e) => await UninstallButton_Click();
-        }
-        else
-        {
-            MessageBox.Show("Button not found!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -39,28 +37,43 @@ public class TestPluginLogic
             MessageBoxImage.Warning);
 
         if (result != MessageBoxResult.Yes)
-        {
             return;
-        }
 
         _button.IsEnabled = false;
         _button.Content = "Uninstalling...";
+        _loadingBar.Visibility = Visibility.Visible;
+        _loadingBar.Value = 0;
 
-        await Task.Run(() =>
+        try
         {
-            TryKillRobloxProcesses();
-            TryRunOfficialUninstaller();
-            TryDeleteRobloxFolders();
-            TryCleanRegistry();
-            TryDeleteShortcuts();
-        });
+            await Task.Run(() => TryKillRobloxProcesses());
+            _loadingBar.Value = 20;
 
-        _button.Content = "Finished!";
+            await Task.Run(() => TryRunOfficialUninstaller());
+            _loadingBar.Value = 40;
 
-        MessageBox.Show("Roblox has been completely uninstalled.\nIt is recommended to restart your computer.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            await Task.Run(() => TryDeleteRobloxFolders());
+            _loadingBar.Value = 60;
+
+            await Task.Run(() => TryCleanRegistry());
+            _loadingBar.Value = 80;
+
+            await Task.Run(() => TryDeleteShortcuts());
+            _loadingBar.Value = 100;
+
+            _button.Content = "Finished!";
+            MessageBox.Show("Roblox has been completely uninstalled.\nIt is recommended to restart your computer.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"An error occurred during uninstallation:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        finally
+        {
+            _loadingBar.Visibility = Visibility.Collapsed;
+            _button.IsEnabled = true;
+        }
     }
-
-    // Helpers simplified: just MessageBoxes on errors, no UI logging
 
     private void TryKillRobloxProcesses()
     {
@@ -76,10 +89,7 @@ public class TestPluginLogic
                     proc.WaitForExit();
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error terminating process {name}: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            catch { }
         }
     }
 
@@ -95,44 +105,35 @@ public class TestPluginLogic
             if (uninstallerPath != null)
             {
                 var proc = Process.Start(uninstallerPath);
-                if (proc != null)
-                {
-                    proc.WaitForExit(30000);
-                    if (!proc.HasExited)
-                    {
-                        proc.Kill();
-                    }
-                }
+                proc?.WaitForExit(30000);
+                if (proc != null && !proc.HasExited) proc.Kill();
             }
         }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Error running official uninstaller: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+        catch { }
     }
 
     private void TryDeleteRobloxFolders()
     {
-        try
+        var folders = new List<string>()
         {
-            var folders = new List<string>()
-            {
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Roblox"),
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Roblox"),
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "AppData", "LocalLow", "RbxLogs"),
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Roblox"),
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Roblox")
-            };
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Roblox"),
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Roblox"),
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "AppData", "LocalLow", "RbxLogs"),
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Roblox"),
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "Roblox"),
 
-            foreach (var folder in folders)
+            // Additional folder to delete
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Plexity", "Downloads")
+        };
+
+        foreach (var folder in folders)
+        {
+            try
             {
                 if (Directory.Exists(folder))
                     Directory.Delete(folder, true);
             }
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Error deleting Roblox folders: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            catch { }
         }
     }
 
@@ -140,23 +141,18 @@ public class TestPluginLogic
     {
         try
         {
-            using (RegistryKey key = Registry.CurrentUser.OpenSubKey("Software", true))
+            using (var key = Registry.CurrentUser.OpenSubKey("Software", true))
             {
-                if (key != null)
-                {
-                    DeleteRegistryKeySafe(key, "Roblox");
-                    DeleteRegistryKeySafe(key, "Roblox Corporation");
-                }
+                DeleteRegistryKeySafe(key, "Roblox");
+                DeleteRegistryKeySafe(key, "Roblox Corporation");
             }
-            using (RegistryKey classesRoot = Registry.ClassesRoot)
+
+            using (var root = Registry.ClassesRoot)
             {
-                DeleteRegistryKeySafe(classesRoot, "roblox-player");
+                DeleteRegistryKeySafe(root, "roblox-player");
             }
         }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Error cleaning registry: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+        catch { }
     }
 
     private void DeleteRegistryKeySafe(RegistryKey parentKey, string keyName)
@@ -166,36 +162,28 @@ public class TestPluginLogic
             if (parentKey.OpenSubKey(keyName) != null)
                 parentKey.DeleteSubKeyTree(keyName);
         }
-        catch
-        {
-            // Ignore errors deleting registry keys
-        }
+        catch { }
     }
 
     private void TryDeleteShortcuts()
     {
-        try
+        var shortcuts = new List<string>()
         {
-            var shortcuts = new List<string>()
-            {
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "Roblox Player.lnk"),
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "Roblox Studio.lnk"),
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu), "Programs", "Roblox"),
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory), "Roblox Player.lnk"),
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory), "Roblox Studio.lnk")
-            };
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "Roblox Player.lnk"),
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "Roblox Studio.lnk"),
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.StartMenu), "Programs", "Roblox"),
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory), "Roblox Player.lnk"),
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory), "Roblox Studio.lnk")
+        };
 
-            foreach (var path in shortcuts)
-            {
-                if (File.Exists(path))
-                    File.Delete(path);
-                else if (Directory.Exists(path))
-                    Directory.Delete(path, true);
-            }
-        }
-        catch
+        foreach (var path in shortcuts)
         {
-            // Ignore errors deleting shortcuts
+            try
+            {
+                if (File.Exists(path)) File.Delete(path);
+                else if (Directory.Exists(path)) Directory.Delete(path, true);
+            }
+            catch { }
         }
     }
 }
