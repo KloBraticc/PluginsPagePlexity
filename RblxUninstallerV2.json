@@ -1,6 +1,6 @@
 {
   "Name": "Uninstall Roblox",
-  "Description": "Uninstall Roblox Files (This may or may not Uninstall Roblox From Plexity but it will RESET YOUR ROBLOX)",
+  "Description": "Uninstall Roblox files (this will reset everything, including your Roblox settings, and sign you out!).",
   "icon_url": "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Icons/djkxxee-483a8d71-fcb7-498a-9dd0-c864c4cd8d04.png",
   "Code": [
     "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Codes/RblxUninstaller.xaml",
