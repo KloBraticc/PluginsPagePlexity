@@ -1,22 +1,63 @@
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Roblox Uninstaller"
-        Height="200" Width="350"
+        Height="500" Width="750"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize">
-    <Grid VerticalAlignment="Center">
-        <Border CornerRadius="8" Padding="75" Margin="20"
-                BorderBrush="#CCCCCC" BorderThickness="1">
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock Text="Roblox Uninstaller By Luci!"
-                           TextWrapping="Wrap"
+    <Grid>
+        <Border CornerRadius="12" Padding="40" Margin="40"
+                BorderBrush="#DDDDDD" BorderThickness="1"
+                VerticalAlignment="Center" HorizontalAlignment="Center">
+            <StackPanel Width="300" HorizontalAlignment="Center" VerticalAlignment="Center">
+                
+                <TextBlock Text="Roblox Uninstaller by Luci!"
                            TextAlignment="Center"
-                           HorizontalAlignment="Center"
-                           Margin="-7,0,0,5" />
+                           FontSize="18" FontWeight="Bold"
+                           Margin="0,0,0,20"/>
+                
                 <Button Name="MyButton"
                         Content="Uninstall Roblox"
-                        Width="150" Height="35"
-                        Cursor="Hand" />
+                        Width="200" Height="40"
+                        Background="#D9534F"
+                        Foreground="White"
+                        FontWeight="SemiBold"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        HorizontalAlignment="Center"
+                        Margin="0,0,0,20">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="#D9534F"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" 
+                                                CornerRadius="6"
+                                                Padding="10">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#C9302C"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+
+                <ProgressBar Name="LoadingBar"
+                             Height="20"
+                             Minimum="0"
+                             Maximum="100"
+                             Value="0"
+                             Visibility="Collapsed"
+                             Foreground="#5CB85C"
+                             Background="#EEEEEE"/>
             </StackPanel>
         </Border>
     </Grid>
