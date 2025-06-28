@@ -1,0 +1,9 @@
+{
+  "Name": "Roblox Server Info V1",
+  "Description": "Checks your Server Info Connecting to Roblox.",
+  "icon_url": "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Icons/Airbrush-Image-Enhancer-1751072106063-Photoroom.png",
+  "Code": [
+    "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Codes/RblxInfo.xaml",
+    "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Codes/RblxInfo.cs"
+  ]
+}
