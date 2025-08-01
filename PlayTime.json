@@ -1,0 +1,9 @@
+{
+  "Name": "PlayTime Info",
+  "Description": "Shows your PlayTime and Longest PlayTime When Playing Roblox",
+  "icon_url": "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Icons/13098580.png",
+  "Code": [
+    "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Codes/PlayTime.xaml",
+    "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Codes/PlayTime.cs"
+  ]
+}
