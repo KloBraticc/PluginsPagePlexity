@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Threading;
 
 public class TestPluginLogic
@@ -45,7 +46,10 @@ public class TestPluginLogic
             TimeSpan elapsed = DateTime.Now - _processStartTime.Value;
 
             if (_currentTextBlock != null)
+            {
                 _currentTextBlock.Text = $"Your Top Most Playtime: {elapsed:hh\\:mm\\:ss}";
+                _currentTextBlock.Foreground = Brushes.LimeGreen;
+            }
 
             if (elapsed > _topPlaytime)
             {
@@ -53,7 +57,17 @@ public class TestPluginLogic
                 SaveTopPlaytime();
 
                 if (_topTextBlock != null)
+                {
                     _topTextBlock.Text = $"Longest Session: {_topPlaytime:hh\\:mm\\:ss}";
+                    _topTextBlock.Foreground = Brushes.Gold; // Highlight when new record
+                }
+            }
+            else
+            {
+                if (_topTextBlock != null)
+                {
+                    _topTextBlock.Foreground = Brushes.White;
+                }
             }
         }
         else
@@ -61,7 +75,15 @@ public class TestPluginLogic
             _processStartTime = null;
 
             if (_currentTextBlock != null)
+            {
                 _currentTextBlock.Text = "Roblox not running.";
+                _currentTextBlock.Foreground = Brushes.Red;
+            }
+
+            if (_topTextBlock != null)
+            {
+                _topTextBlock.Foreground = Brushes.Gray;
+            }
         }
     }
 
@@ -75,7 +97,10 @@ public class TestPluginLogic
                 _topPlaytime = loadedTime;
 
                 if (_topTextBlock != null)
+                {
                     _topTextBlock.Text = $"Longest Session: {_topPlaytime:hh\\:mm\\:ss}";
+                    _topTextBlock.Foreground = Brushes.White;
+                }
             }
         }
     }
