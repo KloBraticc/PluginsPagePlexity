@@ -1,0 +1,9 @@
+{
+  "Name": "Roblox AutoClicker",
+  "Description": "Auto Clicka by Bratic :)",
+  "icon_url": "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Icons/unnamed.png",
+  "Code": [
+    "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Codes/AutoClicka.cs",
+    "https://raw.githubusercontent.com/KloBraticc/PluginsPagePlexity/main/Codes/AutoClicka.xaml"
+  ]
+}
