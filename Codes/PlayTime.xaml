@@ -1,9 +1,7 @@
 <Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Roblox PlayTime" Height="100" Width="180"
-        WindowStartupLocation="CenterScreen"
-        Background="#FF1E1E1E"
-        Topmost="True">
+        Title="Roblox PlayTime" Height="90" Width="150"
+        WindowStartupLocation="CenterScreen">
     <Grid>
             <TextBlock Name="MyTextBlock"
                    FontSize="20"
