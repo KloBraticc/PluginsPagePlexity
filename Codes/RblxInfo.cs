@@ -5,13 +5,14 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.IO;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using System.Xml;
+using System.Windows.Markup;
 
 public class TestPluginLogic
 {
@@ -27,7 +28,6 @@ public class TestPluginLogic
     private readonly string configFilePath;
     private bool isChecking = false;
 
-    // Title animation fields
     private readonly DispatcherTimer titleTimer;
     private readonly string baseTitle = "Server Info";
     private readonly string creditText = " - V1 Credit: Bratic";
@@ -72,9 +72,7 @@ public class TestPluginLogic
         robloxCheckTimer.Elapsed += async (s, e) => await DispatcherSafeCheck();
         robloxCheckTimer.Start();
 
-        // Setup title animation timer
         window.Title = baseTitle;
-
         titleTimer = new DispatcherTimer();
         titleTimer.Interval = TimeSpan.FromSeconds(1);
         titleTimer.Tick += TitleTimer_Tick;
@@ -90,10 +88,7 @@ public class TestPluginLogic
                 window.Title += creditText[creditCharIndex];
                 creditCharIndex++;
             }
-            else
-            {
-                isAppending = false;
-            }
+            else isAppending = false;
         }
         else
         {
@@ -102,10 +97,7 @@ public class TestPluginLogic
                 creditCharIndex--;
                 window.Title = baseTitle + creditText.Substring(0, creditCharIndex);
             }
-            else
-            {
-                isAppending = true;
-            }
+            else isAppending = true;
         }
     }
 
@@ -172,19 +164,14 @@ public class TestPluginLogic
     {
         try
         {
-            var response = await httpClient.GetAsync($"http://ip-api.com/json/{ip}?fields=status,country,regionName,city,message");
-            if (!response.IsSuccessStatusCode)
+            var response = await httpClient.GetStringAsync($"http://ip-api.com/json/{ip}?fields=status,country,regionName,city");
+
+            if (!response.Contains("\"status\":\"success\""))
                 return "Unknown location";
 
-            using var json = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
-            var root = json.RootElement;
-
-            if (root.GetProperty("status").GetString() != "success")
-                return "Unknown location";
-
-            string? city = root.TryGetProperty("city", out var cityProp) ? cityProp.GetString() : null;
-            string? region = root.TryGetProperty("regionName", out var regionProp) ? regionProp.GetString() : null;
-            string? country = root.TryGetProperty("country", out var countryProp) ? countryProp.GetString() : null;
+            string city = ExtractJsonField(response, "city");
+            string region = ExtractJsonField(response, "regionName");
+            string country = ExtractJsonField(response, "country");
 
             string location = string.Join(", ", new[] { city, region, country }.Where(s => !string.IsNullOrWhiteSpace(s)));
             return string.IsNullOrWhiteSpace(location) ? "Unknown location" : location;
@@ -193,6 +180,14 @@ public class TestPluginLogic
         {
             return "Unknown location";
         }
+    }
+
+    private string ExtractJsonField(string json, string field)
+    {
+        int start = json.IndexOf($"\"{field}\":\"") + field.Length + 4;
+        if (start < field.Length + 4) return "";
+        int end = json.IndexOf('"', start);
+        return end > start ? json.Substring(start, end - start) : "";
     }
 
     private async Task<int> GetPingAsync(string ip)
@@ -283,4 +278,18 @@ public enum TcpState
     Closed = 1, Listen = 2, SynSent = 3, SynReceived = 4, Established = 5,
     FinWait1 = 6, FinWait2 = 7, CloseWait = 8, Closing = 9,
     LastAck = 10, TimeWait = 11, DeleteTcb = 12
+}
+
+// ✅ MAIN ENTRY POINT
+public static class PluginStartup
+{
+    [STAThread]
+    public static void Main()
+    {
+        var app = new Application();
+        using var reader = XmlReader.Create("RblxInfo.xaml");
+        var window = (Window)XamlReader.Load(reader);
+        new TestPluginLogic(window);
+        app.Run(window);
+    }
 }
