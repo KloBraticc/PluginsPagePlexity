@@ -30,7 +30,7 @@ public class TestPluginLogic
 
     private readonly DispatcherTimer titleTimer;
     private readonly string baseTitle = "Server Info";
-    private readonly string creditText = " - V1 Credit: Bratic";
+    private readonly string creditText = " - Credit: Bratic";
     private int creditCharIndex = 0;
     private bool isAppending = true;
 
@@ -293,3 +293,4 @@ public static class PluginStartup
         app.Run(window);
     }
 }
+
